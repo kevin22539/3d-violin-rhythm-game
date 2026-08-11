@@ -1,0 +1,352 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#scene-container {
+  width: 100%;
+  height: 100%;
+}
+
+#hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  pointer-events: none;
+  /* Leave room on the right for the camera panel (~200px wide + margin). */
+  max-width: calc(100vw - 240px);
+}
+
+#hud h1 {
+  margin: 0 0 12px 0;
+  font-size: 40px;       /* was 20px — doubled */
+  line-height: 1.1;
+}
+
+#hud p {
+  margin: 0;
+  font-size: 28px;       /* was 14px — doubled */
+  line-height: 1.35;
+  opacity: 0.9;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Camera preset panel  (top-right)
+   ─────────────────────────────────────────────────────────── */
+#camera-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(20, 16, 12, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: Arial, sans-serif;
+  user-select: none;
+}
+
+.camera-panel-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 2px;
+}
+
+.camera-panel-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.camera-panel-button {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #2a1f12;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 7px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  min-width: 140px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.camera-panel-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.camera-panel-button.active {
+  background: rgba(255, 210, 122, 0.22);
+  border-color: rgba(255, 210, 122, 0.6);
+  color: #ffe7bd;
+}
+
+/* Parent buttons (have a caret) */
+.camera-panel-parent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.camera-panel-caret {
+  font-size: 10px;
+  opacity: 0.55;
+  transition: transform 0.18s ease;
+}
+
+.camera-panel-parent.expanded .camera-panel-caret {
+  transform: rotate(-180deg);
+}
+
+/* Child container — collapsed by default */
+.camera-panel-children {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 14px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.camera-panel-children.open {
+  display: flex;
+}
+
+/* Child buttons — slightly smaller and visually nested */
+.camera-panel-button.camera-panel-child {
+  font-size: 12px;
+  padding: 6px 12px;
+  min-width: 0;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Key display  (bottom-center)
+   ─────────────────────────────────────────────────────────── */
+#key-display {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  /* Container is click-through; only the tab buttons opt back in below. */
+  pointer-events: none;
+  font-family: Arial, sans-serif;
+}
+
+/* ── Position tabs (always visible) ── */
+.key-display-tabs {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;   /* tabs need clicks */
+}
+
+.key-display-tab {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(20, 16, 12, 0.62);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.key-display-tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.key-display-tab.active {
+  background: rgba(255, 210, 122, 0.22);
+  border-color: rgba(255, 210, 122, 0.6);
+  color: #ffe7bd;
+}
+
+/* ── Keys panel (shown only when a position is active) ── */
+.key-display-keys {
+  display: none;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.key-display-keys.open {
+  display: flex;
+}
+
+.key-display-placeholder {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  padding: 18px 28px;
+  background: rgba(20, 16, 12, 0.55);
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.key-display-item {
+  position: relative;
+  width: 48px;             /* was 64px */
+  min-height: 60px;        /* was 78px */
+  padding: 6px 4px 8px;    /* was 8px 6px 10px */
+  background: rgba(20, 16, 12, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.key-display-key {
+  font-size: 18px;         /* was 22px */
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.12s ease;
+}
+
+.key-display-string {
+  font-size: 9px;          /* was 10px */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.12s ease;
+}
+
+.key-display-note {
+  position: absolute;
+  bottom: -20px;           /* was -22px */
+  font-size: 11px;         /* was 12px */
+  font-weight: 600;
+  color: #ffe7bd;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.key-display-item.active {
+  background: rgba(255, 210, 122, 0.28);
+  border-color: rgba(255, 210, 122, 0.75);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 4px 18px rgba(255, 200, 110, 0.25);
+}
+
+.key-display-item.active .key-display-key {
+  color: #fff;
+}
+
+.key-display-item.active .key-display-string {
+  color: rgba(255, 230, 190, 0.95);
+}
+
+.key-display-item.active .key-display-note:not(:empty) {
+  opacity: 1;
+}
+
+/* Now-playing keys overlay */
+#now-playing-keys {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  font-family: Arial, sans-serif;
+}
+
+.now-playing-item {
+  width: 56px;
+  min-height: 64px;
+  padding: 8px 6px;
+  background: rgba(255, 210, 122, 0.85);
+  border: 1px solid rgba(255, 210, 122, 1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(255, 200, 110, 0.25);
+  transition:
+    opacity 0.15s ease,
+    transform 0.18s ease;
+}
+
+.now-playing-item.hidden {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+
+.now-playing-key {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2a1f12;
+  line-height: 1;
+}
+
+.now-playing-label {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 5px;
+  color: rgba(40, 28, 16, 0.85);
+  white-space: nowrap;
+}
+
+.now-playing-note {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffe7bd;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  margin-top: 2px;
+}
+
+.now-playing-note.visible {
+  opacity: 1;
+}

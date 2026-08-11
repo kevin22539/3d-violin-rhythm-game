@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive 3D Violin Rhythm Game</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="scene-container"></div>
+
+    <div id="hud">
+      <h1>Violin Rhythm Game</h1>
+      <p id="status">Initializing scene...</p>
+    </div>
+  </div>
+
+  <script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
+  }
+}
+</script>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+"Stradivari Violin" (https://skfb.ly/6TwZU) by Ethan Savage is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Violin Bow" (https://skfb.ly/on8ZK) by CharlotteMeehan is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"The Great Drawing Room" (https://skfb.ly/6ypJL) by The Hallwyl Museum (Hallwylska museet) is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
