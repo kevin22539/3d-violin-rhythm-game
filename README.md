@@ -1,14 +1,19 @@
 # 🎻 Interactive 3D Violin Rhythm Game
 
+<p align="center">
+  <a href="https://youtu.be/GGoRbDKXQsY">
+    <img src="./images/demo1.png" alt="Violin Rhythm Game Demo" width="800">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/GGoRbDKXQsY"><strong>▶ Watch Demo Video</strong></a>
+</p>
+
 An interactive web-based 3D violin experience built with **Three.js** and the **Web Audio API**.
 
 The project combines real-time 3D graphics, mouse-based bow interaction, keyboard-controlled fingering, procedural violin audio, melody demonstrations, and a rhythm-game challenge mode.
 
-This project was developed as a group project for the **Computer Graphics** course at the **University of Technology Sydney (UTS)**.
-
-<p align="center">
-  <img src="./images/demo1.png" alt="Violin Rhythm Game Demo" width="800">
-</p>
 ---
 
 ## Overview
