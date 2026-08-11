@@ -6,6 +6,9 @@ The project combines real-time 3D graphics, mouse-based bow interaction, keyboar
 
 This project was developed as a group project for the **Computer Graphics** course at the **University of Technology Sydney (UTS)**.
 
+<p align="center">
+  <img src="./images/demo1.png" alt="Violin Rhythm Game Demo" width="800">
+</p>
 ---
 
 ## Overview
